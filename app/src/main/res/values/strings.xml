@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">CR Planer</string>
+    <string name="keydesigner_and_karol_swierczek_2018">Keydesigner and Karol Świerczek 2018</string>
+    <string name="zaloguj_sie">Zaloguj się</string>
 </resources>

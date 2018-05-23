@@ -27,8 +27,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35355339"
-     inkscape:cx="-253.18016"
-     inkscape:cy="475.42619"
+     inkscape:cx="-592.59142"
+     inkscape:cy="362.28911"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -2228,14 +2228,20 @@ PsRQBnC9hXyuAqOajG9lFJ2S09Dnhiq1arUVSXNKMt/Pqz//2Q==
 "
        preserveAspectRatio="none"
        height="105.83334"
-       width="270.93332" />
+       width="270.93332"
+       inkscape:export-filename="C:\Users\Dell XPS 13\Documents\GitHub\Android-db-connector\app\src\main\res\drawable\background.png"
+       inkscape:export-xdpi="79.406258"
+       inkscape:export-ydpi="79.406258" />
     <rect
        style="opacity:1;fill:#71009f;fill-opacity:0.57560974;fill-rule:nonzero;stroke:none;stroke-width:4.15395832;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.98823529;paint-order:normal"
        id="rect834"
        width="270.93329"
        height="105.83334"
        x="-242.48135"
-       y="-41.78817" />
+       y="-41.78817"
+       inkscape:export-filename="C:\Users\Dell XPS 13\Documents\GitHub\Android-db-connector\app\src\main\res\drawable\background.png"
+       inkscape:export-xdpi="79.406258"
+       inkscape:export-ydpi="79.406258" />
     <g
        id="g849"
        transform="matrix(0.85483871,0,0,0.85483871,-31.493952,5.0299681)"

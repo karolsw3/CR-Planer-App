@@ -24,18 +24,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    compile 'com.github.kittinunf.fuel:fuel:<latest-version>' //for JVM
-    compile 'com.github.kittinunf.fuel:fuel-android:<latest-version>' //for Android
-    compile 'com.github.kittinunf.fuel:fuel-livedata:<latest-version>' //for LiveData support
-    compile 'com.github.kittinunf.fuel:fuel-rxjava:<latest-version>' //for RxJava support
-    compile 'com.github.kittinunf.fuel:fuel-coroutines:<latest-version>' //for Kotlin Coroutines support
-    compile 'com.github.kittinunf.fuel:fuel-gson:<latest-version>' //for Gson support
-    compile 'com.github.kittinunf.fuel:fuel-jackson:<latest-version>' //for Jackson support
-    compile 'com.github.kittinunf.fuel:fuel-moshi:<latest-version>' //for Moshi support
-    compile 'com.github.kittinunf.fuel:fuel-forge:<latest-version>' //for Forge support
+    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

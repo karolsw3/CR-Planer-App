@@ -43,6 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/login"
             android:layout_width="266dp"
             android:layout_height="50dp"
             android:hint="Nazwa użytkownika"
@@ -67,6 +68,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/password"
             android:layout_width="266dp"
             android:layout_height="50dp"
             android:hint="Hasło"
@@ -79,11 +81,12 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@android:style/Widget.Material.Button.Borderless.Colored"
+        android:layout_width="168dp"
+        android:layout_height="39dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/roundbuttonshape"
+        android:background="@color/colorPrimary"
         android:text="@string/zaloguj_sie"
         android:textColor="#fff"
         android:theme="@android:style/Animation"
@@ -93,14 +96,25 @@
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_height="22dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/keydesigner_and_karol_swierczek_2018"
         android:textColor="#999"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textOutput"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginBottom="24dp"
+        android:text="Output:"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

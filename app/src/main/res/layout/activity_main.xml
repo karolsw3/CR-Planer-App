@@ -48,7 +48,7 @@
             android:layout_height="50dp"
             android:hint="Nazwa użytkownika"
             android:shadowColor="#ccc"
-            android:textColor="#999"
+            android:textColor="#444"
             android:textColorHint="#ccc"
             android:textSize="14sp" />
 
@@ -74,22 +74,23 @@
             android:hint="Hasło"
             android:password="true"
             android:shadowColor="#ccc"
-            android:textColor="#999"
+            android:textColor="#444"
             android:textColorHint="#ccc"
             android:textSize="14sp" />
     </android.support.design.widget.TextInputLayout>
 
-    <Button
-        android:id="@+id/button"
-        style="@android:style/Widget.Material.Button.Borderless.Colored"
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/loginButton"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="168dp"
-        android:layout_height="39dp"
+        android:layout_height="49dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
-        android:background="@color/colorPrimary"
         android:text="@string/zaloguj_sie"
         android:textColor="#fff"
         android:theme="@android:style/Animation"
+        android:visibility="visible"
+        app:backgroundTint="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
 
@@ -101,20 +102,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/keydesigner_and_karol_swierczek_2018"
-        android:textColor="#999"
+        android:textColor="#ccc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textOutput"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:layout_marginBottom="24dp"
-        android:text="Output:"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

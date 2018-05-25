@@ -8,8 +8,6 @@ import android.support.v7.widget.AppCompatButton
 import android.widget.Toast
 import com.example.dellxps13.myapplication.LoginTask.AsyncResponse
 import org.json.JSONObject
-import java.net.InetAddress
-import android.content.Context.CONNECTIVITY_SERVICE
 import android.net.ConnectivityManager
 
 
@@ -31,19 +29,22 @@ class MainActivity : AppCompatActivity() {
 
             if(isInternetAvailable()) {
                 LoginTask(object : AsyncResponse {
-
                     override fun processFinish(output: String) {
                         val jsonObj = JSONObject(output.substring(output.indexOf("{"), output.lastIndexOf("}") + 1))
-
                         if (jsonObj.getBoolean("success")) {
-                            Toast.makeText(context, "Pomyślnie zalogowano do systemu", Toast.LENGTH_LONG).show()
+                            setContentView(R.layout.dashboard)
                         } else {
                             Toast.makeText(context, "Niepoprawny login lub hasło", Toast.LENGTH_LONG).show()
                         }
-
                     }
-
                 }).execute(login, password)
+
+                GetInfoTask(object : GetInfoTask.AsyncResponse {
+                    override fun processFinish(output: String) {
+                        val jsonObj = JSONObject(output.substring(output.indexOf("{"), output.lastIndexOf("}") + 1))
+                        Toast.makeText(context, jsonObj.getString("symbol"), Toast.LENGTH_LONG).show()
+                    }
+                }).execute()
             } else {
                 Toast.makeText(context, "Brak połączenia z internetem", Toast.LENGTH_LONG).show()
             }
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun isInternetAvailable(): Boolean {
+    private fun isInternetAvailable(): Boolean {
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return cm.activeNetworkInfo != null
     }

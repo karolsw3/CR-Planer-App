@@ -5,7 +5,7 @@ import okhttp3.*
 
 class LoginTask(delegate: AsyncResponse) : AsyncTask<String, Void, String>() {
 
-    val del = delegate
+    private val del = delegate
 
     interface AsyncResponse {
         fun processFinish(output: String)

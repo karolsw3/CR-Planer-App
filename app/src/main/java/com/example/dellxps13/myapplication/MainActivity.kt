@@ -9,8 +9,10 @@ import android.widget.Toast
 import com.example.dellxps13.myapplication.LoginTask.AsyncResponse
 import org.json.JSONObject
 import android.net.ConnectivityManager
-
-
+import android.support.constraint.ConstraintLayout
+import android.support.v7.widget.CardView
+import android.widget.LinearLayout
+import android.widget.TextView
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val loginButton = findViewById<AppCompatButton>(R.id.loginButton)
 
         loginButton.setOnClickListener {
@@ -42,7 +43,19 @@ class MainActivity : AppCompatActivity() {
                 GetInfoTask(object : GetInfoTask.AsyncResponse {
                     override fun processFinish(output: String) {
                         val jsonObj = JSONObject(output.substring(output.indexOf("{"), output.lastIndexOf("}") + 1))
-                        Toast.makeText(context, jsonObj.getString("symbol"), Toast.LENGTH_LONG).show()
+                        val clients = jsonObj.getJSONArray("clients")
+                        val scroll = findViewById<LinearLayout>(R.id.scroll)
+                        for (i in 0 until clients.length()) {
+                            val card = CardView(context)
+                            val rec = clients.getJSONObject(i)
+                            val text = TextView(context)
+                            text.text = rec.getString("symbol")
+                            card.setCardBackgroundColor(0xff5555)
+                            card.setContentPadding(20, 10, 20, 10)
+                            card.radius = 4F
+                            card.addView(text)
+                            scroll.addView(card)
+                        }
                     }
                 }).execute()
             } else {

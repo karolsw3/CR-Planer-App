@@ -11,6 +11,7 @@ import org.json.JSONObject
 import android.net.ConnectivityManager
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.CardView
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import org.json.JSONException
@@ -87,23 +88,7 @@ class MainActivity : AppCompatActivity() {
                         for (i in 0 until sortedJsonArray.length()) {
                             val rec = sortedJsonArray.getJSONObject(i)
                             if(rec.getInt("day") >= currentDay) {
-                                val card = CardView(context)
-                                val text = TextView(context)
-                                text.text = "Symbol: " + rec.getString("symbol") + " Data: " + rec.getString("date") + " (" + rec.getString("opiekun") + ")"
-                                card.setCardBackgroundColor(0xff5555)
-                                card.setContentPadding(40, 20, 40, 20)
-                                card.setPadding(0, 50, 0 ,0)
-
-                                val params = LinearLayout.LayoutParams(
-                                        LinearLayout.LayoutParams.MATCH_PARENT,
-                                        LinearLayout.LayoutParams.WRAP_CONTENT
-                                )
-                                params.setMargins(0, 20, 0, 20)
-                                card.layoutParams = params
-
-                                card.radius = 4F
-                                card.addView(text)
-                                scroll.addView(card)
+                                scroll.addView(makeCard(rec))
                             }
                         }
                     }
@@ -113,6 +98,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun makeCard(client : JSONObject) : View{
+        val card = CardView(context)
+        val text = TextView(context)
+        text.text = "Symbol: " + client.getString("symbol") + " Data: " + client.getString("date") + " (" + client.getString("opiekun") + ")"
+        card.setCardBackgroundColor(0xff5555)
+        card.setContentPadding(40, 40, 40, 40)
+
+        val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        params.setMargins(0, 25, 0, 25)
+        card.layoutParams = params
+
+        card.radius = 4F
+        card.addView(text)
+        return card
     }
 
     private fun isInternetAvailable(): Boolean {

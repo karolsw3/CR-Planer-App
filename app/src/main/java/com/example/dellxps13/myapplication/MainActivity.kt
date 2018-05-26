@@ -15,6 +15,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import org.json.JSONException
 import org.json.JSONArray
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -80,25 +81,30 @@ class MainActivity : AppCompatActivity() {
                             sortedJsonArray.put(jsonValues[i])
                         }
 
+                        val sdf = SimpleDateFormat("dd")
+                        val currentDay = sdf.format(Date()).toInt()
+
                         for (i in 0 until sortedJsonArray.length()) {
-                            val card = CardView(context)
                             val rec = sortedJsonArray.getJSONObject(i)
-                            val text = TextView(context)
-                            text.text = "Symbol: " + rec.getString("symbol") + " Data: " + rec.getString("date") + " (" + rec.getString("opiekun") + ")"
-                            card.setCardBackgroundColor(0xff5555)
-                            card.setContentPadding(40, 20, 40, 20)
-                            card.setPadding(0, 50, 0 ,0)
+                            if(rec.getInt("day") >= currentDay) {
+                                val card = CardView(context)
+                                val text = TextView(context)
+                                text.text = "Symbol: " + rec.getString("symbol") + " Data: " + rec.getString("date") + " (" + rec.getString("opiekun") + ")"
+                                card.setCardBackgroundColor(0xff5555)
+                                card.setContentPadding(40, 20, 40, 20)
+                                card.setPadding(0, 50, 0 ,0)
 
-                            val params = LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
-                            )
-                            params.setMargins(0, 20, 0, 20)
-                            card.layoutParams = params
+                                val params = LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT,
+                                        LinearLayout.LayoutParams.WRAP_CONTENT
+                                )
+                                params.setMargins(0, 20, 0, 20)
+                                card.layoutParams = params
 
-                            card.radius = 4F
-                            card.addView(text)
-                            scroll.addView(card)
+                                card.radius = 4F
+                                card.addView(text)
+                                scroll.addView(card)
+                            }
                         }
                     }
                 }).execute()

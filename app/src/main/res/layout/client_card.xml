@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:text="Symbol"
             android:textAppearance="@android:style/TextAppearance.Material.Large"
-            android:textColor="#333"
+            android:textColor="#444"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,6 +45,7 @@
             android:text="TextView"
             android:textAppearance="@android:style/TextAppearance.Material.Small"
             android:textColor="#999"
+            android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </android.support.constraint.ConstraintLayout>

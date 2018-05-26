@@ -1,6 +1,13 @@
 package com.example.dellxps13.myapplication
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
@@ -9,7 +16,9 @@ import android.widget.Toast
 import com.example.dellxps13.myapplication.LoginTask.AsyncResponse
 import org.json.JSONObject
 import android.net.ConnectivityManager
+import android.os.Build
 import android.support.constraint.ConstraintLayout
+import android.support.v4.app.NotificationCompat
 import android.support.v7.widget.CardView
 import android.view.View
 import android.widget.LinearLayout
@@ -25,6 +34,10 @@ import android.view.LayoutInflater
 
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var notificationManager: NotificationManager
+    lateinit var notificationChannel: NotificationChannel
+    lateinit var builder: Notification.Builder
 
     val context = this
 
@@ -124,6 +137,35 @@ class MainActivity : AppCompatActivity() {
         opiekunTextView.text = client.getString("opiekun")
 
         return card
+    }
+
+    fun makeNotification(view : View) {
+        val channelId = "com.example.dellxps13.myapplication"
+        val description = "Test desc"
+
+        val intent = Intent(this,MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationChannel = NotificationChannel(channelId,description,NotificationManager.IMPORTANCE_HIGH)
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.GREEN
+            notificationChannel.enableVibration(false)
+            notificationManager.createNotificationChannel(notificationChannel)
+
+            builder = Notification.Builder(this,channelId)
+                    .setSmallIcon(R.drawable.ic_launcher_round)
+                    .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.ic_launcher))
+                    .setContentIntent(pendingIntent)
+        }else{
+            builder = Notification.Builder(this)
+                    .setSmallIcon(R.drawable.ic_launcher_round)
+                    .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.ic_launcher))
+                    .setContentIntent(pendingIntent)
+        }
+        notificationManager.notify(533972,builder.build())
     }
 
     private fun isInternetAvailable(): Boolean {

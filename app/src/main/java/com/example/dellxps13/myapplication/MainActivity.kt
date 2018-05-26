@@ -18,6 +18,10 @@ import org.json.JSONException
 import org.json.JSONArray
 import java.text.SimpleDateFormat
 import java.util.*
+import android.view.ViewGroup
+import android.view.LayoutInflater
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -101,21 +105,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun makeCard(client : JSONObject) : View{
-        val card = CardView(context)
-        val text = TextView(context)
-        text.text = "Symbol: " + client.getString("symbol") + " Data: " + client.getString("date") + " (" + client.getString("opiekun") + ")"
-        card.setCardBackgroundColor(0xff5555)
-        card.setContentPadding(40, 40, 40, 40)
-
+        val vi = applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val card = vi.inflate(R.layout.client_card, null)
         val params = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                180
         )
-        params.setMargins(0, 25, 0, 25)
+        params.setMargins(20, 25, 20, 25)
         card.layoutParams = params
 
-        card.radius = 4F
-        card.addView(text)
+        // fill in any details dynamically here
+        val symbolTextView = card.findViewById(R.id.symbol) as TextView
+        val descriptionTextView = card.findViewById<TextView>(R.id.description)
+        val opiekunTextView = card.findViewById<TextView>(R.id.opiekun)
+
+        symbolTextView.text =  client.getString("symbol")
+        descriptionTextView.text = client.getString("date")
+        opiekunTextView.text = client.getString("opiekun")
+
         return card
     }
 

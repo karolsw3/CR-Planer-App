@@ -1,11 +1,10 @@
 package com.example.dellxps13.myapplication
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
@@ -20,6 +19,7 @@ import android.os.Build
 import android.support.constraint.ConstraintLayout
 import android.support.v4.app.NotificationCompat
 import android.support.v7.widget.CardView
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -38,6 +38,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var notificationManager: NotificationManager
     lateinit var notificationChannel: NotificationChannel
     lateinit var builder: Notification.Builder
+    lateinit var alarmManager: AlarmManager
+    lateinit var pendingIntent: PendingIntent
+    lateinit var broadcastReceiver: BroadcastReceiver
+    lateinit var calendar: Calendar
 
     val context = this
 
@@ -45,6 +49,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val loginButton = findViewById<AppCompatButton>(R.id.loginButton)
+
+        calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 20)
+        calendar.set(Calendar.MINUTE, 22)
+        registerAlarmBroadcast()
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,  calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent)
 
         loginButton.setOnClickListener {
             var login = findViewById<TextInputEditText>(R.id.login).text.toString()
@@ -171,6 +181,18 @@ class MainActivity : AppCompatActivity() {
     private fun isInternetAvailable(): Boolean {
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return cm.activeNetworkInfo != null
+    }
+
+    private fun registerAlarmBroadcast() {
+        broadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                Toast.makeText(context, "Your Alarm is there", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        registerReceiver(broadcastReceiver, IntentFilter("com.example.dellxps13.myapplication"))
+        pendingIntent = PendingIntent.getBroadcast(this, 0, Intent("com.example.dellxps13.myapplication"), 0)
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
 
 }

@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".MainActivity$Receiver"/>
+        <receiver android:name="com.example.dellxps13.myapplication.AlarmReceiver"/>
 
     </application>
 

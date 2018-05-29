@@ -30,9 +30,6 @@ import java.util.*
 import android.view.ViewGroup
 import android.view.LayoutInflater
 
-
-
-
 class MainActivity : AppCompatActivity() {
 
     lateinit var notificationManager: NotificationManager
@@ -40,7 +37,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var builder: Notification.Builder
     lateinit var alarmManager: AlarmManager
     lateinit var pendingIntent: PendingIntent
-    lateinit var broadcastReceiver: BroadcastReceiver
     lateinit var calendar: Calendar
 
     val context = this
@@ -49,13 +45,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val loginButton = findViewById<AppCompatButton>(R.id.loginButton)
-
-        calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 20)
-        calendar.set(Calendar.MINUTE, 22)
-        registerAlarmBroadcast()
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,  calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent)
-
+        setAlarm()
         loginButton.setOnClickListener {
             var login = findViewById<TextInputEditText>(R.id.login).text.toString()
             var password = findViewById<TextInputEditText>(R.id.password).text.toString()
@@ -149,7 +139,7 @@ class MainActivity : AppCompatActivity() {
         return card
     }
 
-    fun makeNotification(view : View) {
+    fun makeNotification() {
         val channelId = "com.example.dellxps13.myapplication"
         val description = "Test desc"
 
@@ -183,16 +173,13 @@ class MainActivity : AppCompatActivity() {
         return cm.activeNetworkInfo != null
     }
 
-    private fun registerAlarmBroadcast() {
-        broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                Toast.makeText(context, "Your Alarm is there", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        registerReceiver(broadcastReceiver, IntentFilter("com.example.dellxps13.myapplication"))
-        pendingIntent = PendingIntent.getBroadcast(this, 0, Intent("com.example.dellxps13.myapplication"), 0)
+    private fun setAlarm() {
+        intent = Intent(this@MainActivity, AlarmReceiver::class.java)
+        pendingIntent = PendingIntent.getBroadcast(this@MainActivity, 0, intent, 0)
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 7)
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, 60 * 1000, pendingIntent)
     }
 
 }

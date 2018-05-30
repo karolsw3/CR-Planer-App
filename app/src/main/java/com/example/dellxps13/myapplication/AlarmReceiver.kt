@@ -11,6 +11,9 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.util.Log
+import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class AlarmReceiver : BroadcastReceiver() {
@@ -18,6 +21,35 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.d("-", "ALARM RECEIVED")
         makeNotification(context)
+
+        var deadLine = checkDeadLines()
+        if (deadLine.getBoolean("success")) {
+            makeNotification(context)
+        }
+    }
+
+    fun checkDeadLines() : JSONObject {
+        var dummyObject = JSONObject()
+        dummyObject.put("success",false)
+
+        GetInfoTask(object : GetInfoTask.AsyncResponse {
+            override fun processFinish(output: String) {
+                val jsonObj = JSONObject(output.substring(output.indexOf("{"), output.lastIndexOf("}") + 1))
+                val clients = jsonObj.getJSONArray("clients")
+
+                val sdf = SimpleDateFormat("dd")
+                val currentDay = sdf.format(Date()).toInt()
+
+                for (i in 0 until clients.length()) {
+                    val rec = clients.getJSONObject(i)
+                    if (rec.getInt("day") == currentDay) {
+                        rec.put("success", true)
+                        dummyObject = rec
+                    }
+                }
+            }
+        }).execute()
+        return dummyObject
     }
 
     fun makeNotification(context: Context?) {

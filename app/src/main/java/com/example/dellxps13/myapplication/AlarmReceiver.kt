@@ -20,41 +20,29 @@ class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.d("-", "ALARM RECEIVED")
-        makeNotification(context)
-
-        var deadLine = checkDeadLines()
-        if (deadLine.getBoolean("success")) {
-            makeNotification(context)
-        }
+        checkDeadLines(context)
     }
 
-    fun checkDeadLines() : JSONObject {
-        var dummyObject = JSONObject()
-        dummyObject.put("success",false)
-
+    private fun checkDeadLines(context: Context?) {
         GetInfoTask(object : GetInfoTask.AsyncResponse {
             override fun processFinish(output: String) {
                 val jsonObj = JSONObject(output.substring(output.indexOf("{"), output.lastIndexOf("}") + 1))
                 val clients = jsonObj.getJSONArray("clients")
-
                 val sdf = SimpleDateFormat("dd")
                 val currentDay = sdf.format(Date()).toInt()
-
                 for (i in 0 until clients.length()) {
                     val rec = clients.getJSONObject(i)
                     if (rec.getInt("day") == currentDay) {
-                        rec.put("success", true)
-                        dummyObject = rec
+                        makeNotification(context, "Klient: " + rec.getString("symbol") + " Data: " + rec.getString("date"))
                     }
                 }
             }
         }).execute()
-        return dummyObject
     }
 
-    fun makeNotification(context: Context?) {
+    fun makeNotification(context: Context?, textContent : String) {
         val channelId = "com.example.dellxps13.myapplication"
-        val description = "Test desc"
+        val description = "Przypomnienie o terminie"
 
         val intent2 = Intent(context, MainActivity::class.java)
         val pendingIntent2 = PendingIntent.getActivity(context, 1, intent2, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -71,12 +59,16 @@ class AlarmReceiver : BroadcastReceiver() {
 
             builder = Notification.Builder(context, channelId)
                     .setSmallIcon(R.drawable.ic_launcher_round)
-                    .setLargeIcon(BitmapFactory.decodeResource(context?.resources, R.drawable.ic_launcher))
+                    .setContentTitle(description)
+                    .setContentText(textContent)
+                    .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_launcher))
                     .setContentIntent(pendingIntent2)
         } else {
             builder = Notification.Builder(context)
                     .setSmallIcon(R.drawable.ic_launcher_round)
-                    .setLargeIcon(BitmapFactory.decodeResource(context?.resources, R.drawable.ic_launcher))
+                    .setContentTitle(description)
+                    .setContentText(textContent)
+                    .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_launcher))
                     .setContentIntent(pendingIntent2)
         }
         notificationManager.notify(533972, builder.build())

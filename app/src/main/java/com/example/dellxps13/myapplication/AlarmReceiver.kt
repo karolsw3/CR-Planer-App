@@ -10,7 +10,6 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
-import android.util.Log
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*

@@ -74,23 +74,28 @@ class MainActivity : AppCompatActivity() {
                             jsonValues.add(clients.getJSONObject(i))
                         }
                         Collections.sort(jsonValues, object : Comparator<JSONObject> {
-                            //You can change "Name" with "ID" if you want to sort by ID
                             private val KEY_NAME = "day"
-
                             override fun compare(a: JSONObject, b: JSONObject): Int {
                                 var valA = 0
                                 var valB = 0
-
                                 try {
                                     valA = a.get(KEY_NAME) as Int
                                     valB = b.get(KEY_NAME) as Int
-                                } catch (e: JSONException) {
-                                    //do something
-                                }
-
+                                } catch (e: JSONException) {}
                                 return valA.compareTo(valB)
-                                //if you want to change the sort order, simply use the following:
-                                //return -valA.compareTo(valB);
+                            }
+                        })
+
+                        Collections.sort(jsonValues, object : Comparator<JSONObject> {
+                            private val KEY_NAME = "month"
+                            override fun compare(a: JSONObject, b: JSONObject): Int {
+                                var valA = 0
+                                var valB = 0
+                                try {
+                                    valA = a.get(KEY_NAME) as Int
+                                    valB = b.get(KEY_NAME) as Int
+                                } catch (e: JSONException) {}
+                                return valA.compareTo(valB)
                             }
                         })
 
@@ -98,12 +103,14 @@ class MainActivity : AppCompatActivity() {
                             sortedJsonArray.put(jsonValues[i])
                         }
 
-                        val sdf = SimpleDateFormat("dd")
-                        val currentDay = sdf.format(Date()).toInt()
+                        val currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+
+                        val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
+                        Log.d("-", "Current day: $currentDay Current month: $currentMonth")
 
                         for (i in 0 until sortedJsonArray.length()) {
                             val rec = sortedJsonArray.getJSONObject(i)
-                            if (rec.getInt("day") >= currentDay) {
+                            if (rec.getInt("day") >= currentDay || rec.getInt("month") > currentMonth) {
                                 scroll.addView(makeCard(rec))
                             }
                         }

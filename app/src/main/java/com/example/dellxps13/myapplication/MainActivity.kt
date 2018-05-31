@@ -3,6 +3,7 @@ package com.example.dellxps13.myapplication
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
@@ -14,6 +15,7 @@ import com.example.dellxps13.myapplication.LoginTask.AsyncResponse
 import org.json.JSONObject
 import android.net.ConnectivityManager
 import android.os.Build
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
@@ -53,6 +55,10 @@ class MainActivity : AppCompatActivity() {
 
                             val switchNotify0days = findViewById<Switch>(R.id.switch_notify_0days)
                             val switchNotify2days = findViewById<Switch>(R.id.switch_notify_2days)
+
+                            val settings : SharedPreferences = getSharedPreferences("defaults", 0)
+                            switchNotify0days.isChecked = settings.getBoolean("notify0days", true)
+                            switchNotify2days.isChecked = settings.getBoolean("notify2days", false)
 
                             setAlarm(switchNotify0days.isChecked, switchNotify2days.isChecked)
                         } else {
@@ -120,6 +126,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun switchClicked (view : View) {
+        var switch = findViewById<Switch>(view.id)
+
+        var notify0days = switch.getTag().toString().toBoolean()
+        Log.d("-", "Notify 0 days: $notify0days")
+        var settings = getSharedPreferences("defaults", 0)
+        var editor = settings.edit()
+        if (notify0days) {
+            editor.putBoolean("notify0days", switch.isChecked)
+        } else {
+            editor.putBoolean("notify2days", switch.isChecked)
+        }
+        editor.apply()
+    }
+
     private fun makeCard(client: JSONObject): View {
         val vi = applicationContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val card = vi.inflate(R.layout.client_card, null)
@@ -160,7 +181,7 @@ class MainActivity : AppCompatActivity() {
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, 7)
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, 60 * 100000, pendingIntent)
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_DAY, pendingIntent)
     }
 
     private fun cancelAlarmIfExists(intent : Intent){

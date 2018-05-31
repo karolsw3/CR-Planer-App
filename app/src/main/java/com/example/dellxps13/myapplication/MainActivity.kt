@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val loginButton = findViewById<AppCompatButton>(R.id.loginButton)
-        setAlarm()
         loginButton.setOnClickListener {
             var login = findViewById<TextInputEditText>(R.id.login).text.toString()
             var password = findViewById<TextInputEditText>(R.id.password).text.toString()
@@ -51,6 +50,11 @@ class MainActivity : AppCompatActivity() {
                         val jsonObj = JSONObject(output.substring(output.indexOf("{"), output.lastIndexOf("}") + 1))
                         if (jsonObj.getBoolean("success")) {
                             setContentView(R.layout.dashboard)
+
+                            val switchNotify0days = findViewById<Switch>(R.id.switch_notify_0days)
+                            val switchNotify2days = findViewById<Switch>(R.id.switch_notify_2days)
+
+                            setAlarm(switchNotify0days.isChecked, switchNotify2days.isChecked)
                         } else {
                             Toast.makeText(context, "Niepoprawny login lub hasło", Toast.LENGTH_LONG).show()
                         }
@@ -138,18 +142,29 @@ class MainActivity : AppCompatActivity() {
         return cm.activeNetworkInfo != null
     }
 
-    private fun setAlarm() {
-        val switchNotify0days = findViewById<Switch>(R.id.switch_notify_0days)
-        val switchNotify2days = findViewById<Switch>(R.id.switch_notify_2days)
+    private fun setAlarm(notify0Days : Boolean, notify2Days: Boolean) {
 
         intent = Intent(this@MainActivity, AlarmReceiver::class.java)
-        intent.putExtra("notify0days", switchNotify0days.isChecked)
-        intent.putExtra("notify2days", switchNotify2days.isChecked)
+                .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        intent.putExtra("notify0days", notify0Days)
+        intent.putExtra("notify2days", notify2Days)
 
-        pendingIntent = PendingIntent.getBroadcast(this@MainActivity, 0, intent, 0)
+        cancelAlarmIfExists(intent)
+
+        pendingIntent = PendingIntent.getBroadcast(this@MainActivity, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, 7)
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, 60 * 100000, pendingIntent)
+    }
+
+    private fun cancelAlarmIfExists(intent : Intent){
+        try {
+            val pendingIntent = PendingIntent.getBroadcast(this@MainActivity, 0, intent,0)
+            val am = this@MainActivity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            am.cancel(pendingIntent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

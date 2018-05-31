@@ -7,18 +7,6 @@
     tools:context=".MainActivity">
 
     <Switch
-        android:id="@+id/switch_notify_2days"
-        android:layout_width="294dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        android:text="Powiadom mnie 2 dni przed terminem"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Switch
         android:id="@+id/switch_notify_0days"
         android:layout_width="294dp"
         android:layout_height="40dp"
@@ -31,6 +19,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:checked="true" />
+
+    <Switch
+        android:id="@+id/switch_notify_2days"
+        android:layout_width="294dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:text="Powiadom mnie 2 dni przed terminem"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <View
         android:id="@+id/divider"

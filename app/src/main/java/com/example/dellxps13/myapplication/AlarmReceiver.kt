@@ -19,13 +19,13 @@ import java.util.*
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val notify0days = intent.getBooleanExtra("notify0days", false)
-        val notify2days = intent.getBooleanExtra("notify2days", false)
+        val extras = intent.extras
+        val notify0days = extras.getBoolean("notify0days", false)
+        val notify2days = extras.getBoolean("notify2days", false)
 
         val sdf = SimpleDateFormat("dd")
         val currentDay = sdf.format(Date()).toInt()
 
-        Log.d("-", "ALARM RECEIVED")
         if (notify0days) {
             checkDeadLines(context, currentDay)
         }
@@ -35,7 +35,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
     }
 
-    private fun checkDeadLines(context: Context?, currentDay : Int) {
+    private fun checkDeadLines(context: Context, currentDay : Int) {
         GetInfoTask(object : GetInfoTask.AsyncResponse {
             override fun processFinish(output: String) {
                 val jsonObj = JSONObject(output.substring(output.indexOf("{"), output.lastIndexOf("}") + 1))
@@ -51,14 +51,14 @@ class AlarmReceiver : BroadcastReceiver() {
         }).execute()
     }
 
-    fun makeNotification(context: Context?, textContent : String) {
+    fun makeNotification(context: Context, textContent : String) {
         val channelId = "com.example.dellxps13.myapplication"
         val description = "Przypomnienie o terminie"
 
         val intent2 = Intent(context, MainActivity::class.java)
         val pendingIntent2 = PendingIntent.getActivity(context, 1, intent2, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         lateinit var builder : Notification.Builder
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

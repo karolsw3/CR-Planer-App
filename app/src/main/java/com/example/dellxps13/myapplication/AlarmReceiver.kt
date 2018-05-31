@@ -23,7 +23,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val notify2days = extras.getBoolean("notify2days", false)
 
         val sdf = SimpleDateFormat("dd")
-        val currentDay = sdf.format(Date()).toInt()
+        var currentDay = sdf.format(Date()).toInt()
 
         if (notify0days) {
             checkDeadLines(context, currentDay)
@@ -34,7 +34,16 @@ class AlarmReceiver : BroadcastReceiver() {
 
     }
 
-    private fun checkDeadLines(context: Context, currentDay : Int) {
+    private fun checkDeadLines(context: Context, checkedDay : Int) {
+
+        var currentDay = checkedDay
+        var currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
+
+        if(currentDay < 0) {
+            currentDay += 30
+            currentMonth--
+        }
+
         GetInfoTask(object : GetInfoTask.AsyncResponse {
             override fun processFinish(output: String) {
                 val jsonObj = JSONObject(output.substring(output.indexOf("{"), output.lastIndexOf("}") + 1))
@@ -42,7 +51,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
                 for (i in 0 until clients.length()) {
                     val rec = clients.getJSONObject(i)
-                    if (rec.getInt("day") == currentDay) {
+                    if (rec.getInt("day") == currentDay || rec.getInt("month") == currentMonth) {
                         makeNotification(context, "Klient: " + rec.getString("symbol") + " Data: " + rec.getString("date"))
                     }
                 }

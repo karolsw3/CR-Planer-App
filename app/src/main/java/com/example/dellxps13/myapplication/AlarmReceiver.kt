@@ -18,18 +18,29 @@ import java.util.*
 
 class AlarmReceiver : BroadcastReceiver() {
 
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onReceive(context: Context, intent: Intent) {
+        val notify0days = intent.getBooleanExtra("notify0days", false)
+        val notify2days = intent.getBooleanExtra("notify2days", false)
+
+        val sdf = SimpleDateFormat("dd")
+        val currentDay = sdf.format(Date()).toInt()
+
         Log.d("-", "ALARM RECEIVED")
-        checkDeadLines(context)
+        if (notify0days) {
+            checkDeadLines(context, currentDay)
+        }
+        if (notify2days) {
+            checkDeadLines(context, currentDay - 2)
+        }
+
     }
 
-    private fun checkDeadLines(context: Context?) {
+    private fun checkDeadLines(context: Context?, currentDay : Int) {
         GetInfoTask(object : GetInfoTask.AsyncResponse {
             override fun processFinish(output: String) {
                 val jsonObj = JSONObject(output.substring(output.indexOf("{"), output.lastIndexOf("}") + 1))
                 val clients = jsonObj.getJSONArray("clients")
-                val sdf = SimpleDateFormat("dd")
-                val currentDay = sdf.format(Date()).toInt()
+
                 for (i in 0 until clients.length()) {
                     val rec = clients.getJSONObject(i)
                     if (rec.getInt("day") == currentDay) {

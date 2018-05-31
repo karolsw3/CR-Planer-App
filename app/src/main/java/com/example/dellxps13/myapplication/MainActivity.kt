@@ -23,6 +23,7 @@ import org.json.JSONArray
 import java.text.SimpleDateFormat
 import java.util.*
 import android.view.LayoutInflater
+import android.widget.Switch
 
 class MainActivity : AppCompatActivity() {
 
@@ -138,11 +139,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setAlarm() {
+        val switchNotify0days = findViewById<Switch>(R.id.switch_notify_0days)
+        val switchNotify2days = findViewById<Switch>(R.id.switch_notify_2days)
+
         intent = Intent(this@MainActivity, AlarmReceiver::class.java)
+        intent.putExtra("notify0days", switchNotify0days.isChecked)
+        intent.putExtra("notify2days", switchNotify2days.isChecked)
+
         pendingIntent = PendingIntent.getBroadcast(this@MainActivity, 0, intent, 0)
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, 7)
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, 60 * 1000, pendingIntent)
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, 60 * 100000, pendingIntent)
     }
 }

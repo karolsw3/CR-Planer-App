@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <Switch
-        android:id="@+id/switch3"
+        android:id="@+id/switch_notify_2days"
         android:layout_width="294dp"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Switch
-        android:id="@+id/switch2"
+        android:id="@+id/switch_notify_0days"
         android:layout_width="294dp"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
@@ -27,7 +27,7 @@
         android:layout_marginStart="16dp"
         android:checked="true"
         android:text="Powiadom mnie w dniu terminu"
-        app:layout_constraintBottom_toTopOf="@+id/switch3"
+        app:layout_constraintBottom_toTopOf="@+id/switch_notify_2days"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:checked="true" />
@@ -39,7 +39,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/switch2"
+        app:layout_constraintBottom_toTopOf="@+id/switch_notify_0days"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="CR Planer - Terminy na ten miesiąc"
+        android:text="CR Planer - Najbliższe terminy"
         android:textColor="#ffffff"
         android:textSize="18sp"
         android:textStyle="bold"

@@ -186,7 +186,7 @@ class MainActivity : AppCompatActivity() {
         alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, 7)
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_DAY, pendingIntent)
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
     }
 
     private fun cancelAlarmIfExists(intent : Intent){

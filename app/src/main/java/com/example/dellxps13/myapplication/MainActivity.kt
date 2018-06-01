@@ -43,8 +43,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val loginButton = findViewById<AppCompatButton>(R.id.loginButton)
         loginButton.setOnClickListener {
-            var login = findViewById<TextInputEditText>(R.id.login).text.toString()
-            var password = findViewById<TextInputEditText>(R.id.password).text.toString()
+            val login = findViewById<TextInputEditText>(R.id.login).text.toString()
+            val password = findViewById<TextInputEditText>(R.id.password).text.toString()
 
             if (isInternetAvailable()) {
                 LoginTask(object : AsyncResponse {
@@ -127,16 +127,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun switchClicked (view : View) {
-        var switch = findViewById<Switch>(view.id)
+        val switch = findViewById<Switch>(view.id)
+        val notify0days = switch.getTag().toString().toBoolean()
+        val settings = getSharedPreferences("defaults", 0)
+        val editor = settings.edit()
 
-        var notify0days = switch.getTag().toString().toBoolean()
-        Log.d("-", "Notify 0 days: $notify0days")
-        var settings = getSharedPreferences("defaults", 0)
-        var editor = settings.edit()
         if (notify0days) {
             editor.putBoolean("notify0days", switch.isChecked)
+            val switchNotify2days = findViewById<Switch>(R.id.switch_notify_2days)
+
+            setAlarm(switch.isChecked, switchNotify2days.isChecked)
         } else {
             editor.putBoolean("notify2days", switch.isChecked)
+            val switchNotify0days = findViewById<Switch>(R.id.switch_notify_0days)
+
+            setAlarm(switchNotify0days.isChecked, switch.isChecked)
         }
         editor.apply()
     }

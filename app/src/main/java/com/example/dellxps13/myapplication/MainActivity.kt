@@ -32,9 +32,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var alarmManager: AlarmManager
     lateinit var pendingIntent: PendingIntent
     lateinit var calendar: Calendar
-    lateinit var notificationManager: NotificationManager
-    lateinit var notificationChannel: NotificationChannel
-    lateinit var builder: Notification.Builder
 
     val context = this
 
@@ -128,7 +125,7 @@ class MainActivity : AppCompatActivity() {
 
     fun switchClicked (view : View) {
         val switch = findViewById<Switch>(view.id)
-        val notify0days = switch.getTag().toString().toBoolean()
+        val notify0days = switch.tag.toString().toBoolean()
         val settings = getSharedPreferences("defaults", 0)
         val editor = settings.edit()
 

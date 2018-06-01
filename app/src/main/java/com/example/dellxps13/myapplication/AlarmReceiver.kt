@@ -42,6 +42,29 @@ class AlarmReceiver : BroadcastReceiver() {
         if(currentDay < 0) {
             currentDay += 30
             currentMonth--
+
+            if (currentMonth == 0) {
+                currentMonth = 12
+            }
+
+            when (currentMonth) {
+                1 -> currentDay += 31
+                2 -> currentYear += if ((currentYear % 4 == 0 && currentYear % 100 != 0) || currentYear % 400 == 0) {
+                        29
+                    } else {
+                        28
+                    }
+                3 -> currentDay += 31
+                4 -> currentDay += 30
+                5 -> currentDay += 31
+                6 -> currentDay += 30
+                7 -> currentDay += 31
+                8 -> currentDay += 31
+                9 -> currentDay += 30
+                10 -> currentDay += 31
+                11 -> currentDay += 30
+                12 -> currentDay += 31
+            }
         }
 
         GetInfoTask(object : GetInfoTask.AsyncResponse {
